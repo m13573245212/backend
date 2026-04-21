@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration>
+    <!-- 控制台输出 -->
+    <appender name="CONSOLE" class="ch.qos.logback.core.ConsoleAppender">
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 文件输出，按日期和大小分割 -->
+    <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
+        <!-- 日志文件路径 -->
+        <file>logs/app.log</file>
+        
+        <!-- 滚动策略：按日期和大小分割 -->
+        <rollingPolicy class="ch.qos.logback.core.rolling.SizeAndTimeBasedRollingPolicy">
+            <!-- 文件命名格式 -->
+            <fileNamePattern>logs/app.%d{yyyy-MM-dd}.%i.log</fileNamePattern>
+            <!-- 保留30天日志 -->
+            <maxHistory>30</maxHistory>
+            <!-- 单个文件最大100MB -->
+            <maxFileSize>100MB</maxFileSize>
+            <!-- 总大小限制1GB -->
+            <totalSizeCap>1GB</totalSizeCap>
+        </rollingPolicy>
+        
+        <encoder>
+            <pattern>%d{yyyy-MM-dd HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
+            <charset>UTF-8</charset>
+        </encoder>
+    </appender>
+
+    <!-- 根日志级别 -->
+    <root level="INFO">
+        <appender-ref ref="CONSOLE"/>
+        <appender-ref ref="FILE"/>
+    </root>
+
+    <!-- 项目包日志级别 -->
+    <logger name="com.example.filemanagement" level="DEBUG"/>
+    <logger name="com.example.filemanagement.controller" level="INFO"/>
+    
+    <!-- Spring 日志级别 -->
+    <logger name="org.springframework" level="INFO"/>
+    
+    <!-- MyBatis 日志级别 -->
+    <logger name="com.example.filemanagement.mapper" level="DEBUG"/>
+</configuration>
