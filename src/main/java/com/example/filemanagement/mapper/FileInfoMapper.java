@@ -8,7 +8,7 @@ import java.util.List;
 @Mapper
 public interface FileInfoMapper {
     
-    List<FileInfo> getAllFiles();
+    List<FileInfo> getFiles(String keyword);
     
     FileInfo getFileById(Long id);
     
@@ -18,5 +18,4 @@ public interface FileInfoMapper {
     
     int deleteFile(Long id);
     
-    List<FileInfo> searchFiles(String keyword);
 }

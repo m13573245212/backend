@@ -1,15 +1,13 @@
 package com.example.filemanagement.service;
 
 import com.example.filemanagement.entity.FileInfo;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.github.pagehelper.PageInfo;
 
-import java.util.List;
 
 public interface FileService {
     
-    List<FileInfo> getAllFiles();
-    
-    PageInfo<FileInfo> getFilesByPage(int pageNum, int pageSize);
+    PageInfo<FileInfo> getFilesByPage(int pageNum, int pageSize, String keyword, String sortField, String sortOrder);
     
     FileInfo getFileById(Long id);
     
@@ -19,7 +17,24 @@ public interface FileService {
     
     void deleteFile(Long id);
     
-    List<FileInfo> searchFiles(String keyword);
+    PreviewResult previewFile(Long id);
     
-    PageInfo<FileInfo> searchFilesByPage(String keyword, int pageNum, int pageSize);
+    /**
+     * 文件预览结果
+     */
+    class PreviewResult {
+        private final String content;
+        private final boolean isMarkdown;
+        public PreviewResult(String content, boolean isMarkdown) {
+            this.content = content;
+            this.isMarkdown = isMarkdown;
+        }
+        public String getContent() {
+            return content;
+        }
+        @JsonProperty("isMarkdown")
+        public boolean isMarkdown() {
+            return isMarkdown;
+        }
+    }
 }

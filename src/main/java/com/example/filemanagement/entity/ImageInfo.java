@@ -10,10 +10,11 @@ import java.util.Date;
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
-public class FileInfo {
+public class ImageInfo {
     private Long id;
     private String fileName;
     private String filePath;
+    private Long mdFileId;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date createTime;
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
