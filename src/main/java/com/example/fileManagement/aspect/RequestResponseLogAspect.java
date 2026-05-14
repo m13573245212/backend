@@ -1,4 +1,4 @@
-package com.example.filemanagement.aspect;
+package com.example.fileManagement.aspect;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import javax.servlet.http.HttpServletRequest;

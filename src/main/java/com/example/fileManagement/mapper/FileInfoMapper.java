@@ -1,6 +1,6 @@
-package com.example.filemanagement.mapper;
+package com.example.fileManagement.mapper;
 
-import com.example.filemanagement.entity.FileInfo;
+import com.example.fileManagement.entity.FileInfo;
 import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.example.filemanagement;
+package com.example.fileManagement;
 
 import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.boot.SpringApplication;

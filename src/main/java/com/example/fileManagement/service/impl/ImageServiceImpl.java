@@ -1,16 +1,21 @@
-package com.example.filemanagement.service.impl;
+package com.example.fileManagement.service.impl;
 
-import com.example.filemanagement.entity.ImageInfo;
-import com.example.filemanagement.mapper.ImageInfoMapper;
-import com.example.filemanagement.service.ImageService;
+import com.example.fileManagement.entity.ImageInfo;
+import com.example.fileManagement.entity.req.ImageRequest;
+import com.example.fileManagement.mapper.ImageInfoMapper;
+import com.example.fileManagement.service.ImageService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
@@ -27,6 +32,13 @@ public class ImageServiceImpl implements ImageService {
     private String imageDir;
 
     @Override
+    public ResponseEntity<PageInfo<ImageInfo>> getImages(ImageRequest request) {
+        PageHelper.startPage(request.getCurrentPage(),request.getPageSize());
+        PageInfo<ImageInfo> list=imageInfoMapper.getImages(request);
+        return ResponseEntity.ok(list);
+    }
+
+    @Override
     public ImageInfo uploadImage(MultipartFile file, Long mdFileId) {
         if (file.isEmpty()) {
             throw new RuntimeException("上传文件为空");
@@ -34,7 +46,7 @@ public class ImageServiceImpl implements ImageService {
 
         String originalName = file.getOriginalFilename();
         if (originalName == null || originalName.isEmpty()) {
-            throw new RuntimeException("文件名不能为空");
+            throw new RuntimeException("关联文件不能为空");
         }
 
         // 创建 MD 文件专属子目录：images/md_{mdFileId}/
@@ -53,10 +65,12 @@ public class ImageServiceImpl implements ImageService {
 
         // 直接使用原始文件名，子目录已隔离重名
         Path filePath = uploadPath.resolve(originalName);
-        File destFile = filePath.toFile();
+        
+        log.info("准备保存文件: {}", filePath.toAbsolutePath());
 
-        try {
-            file.transferTo(destFile);
+        try (InputStream input=file.getInputStream()){
+            // 使用 Files.copy 替代 transferTo，更可靠且支持覆盖
+            Files.copy(input, filePath, java.nio.file.StandardCopyOption.REPLACE_EXISTING);
             log.info("图片上传成功: {}", filePath);
 
             ImageInfo imageInfo = new ImageInfo();
@@ -96,12 +110,14 @@ public class ImageServiceImpl implements ImageService {
         if (file.exists()) {
             boolean deleted = file.delete();
             log.info("物理文件删除: {} - {}", imageInfo.getFilePath(), deleted ? "成功" : "失败");
+        }else{
+            log.info("路径:{},未发现物理文件",imageInfo.getFilePath());
         }
 
         imageInfoMapper.deleteImage(id);
         log.info("图片记录删除成功: id={}", id);
     }
-
+    
     @Override
     public void deleteImagesByMdFileId(Long mdFileId) {
         List<ImageInfo> images = imageInfoMapper.getImagesByMdFileId(mdFileId);

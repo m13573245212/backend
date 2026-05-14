@@ -1,12 +1,15 @@
-package com.example.filemanagement.controller;
+package com.example.fileManagement.controller;
 
-import com.example.filemanagement.entity.FileInfo;
-import com.example.filemanagement.service.FileService;
+import com.example.fileManagement.entity.FileInfo;
+import com.example.fileManagement.service.FileService;
 import com.github.pagehelper.PageInfo;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
+
+import javax.servlet.http.HttpServletRequest;
 
 @RestController
 @RequestMapping("/files")
@@ -44,6 +47,13 @@ public class FileController {
         return ResponseEntity.ok(createdFile);
     }
 
+    @PostMapping("/upload")
+    public ResponseEntity<FileInfo> uploadFile(@RequestParam("file") MultipartFile file) {
+        log.info("上传文件: fileName={}, size={}", file.getOriginalFilename(), file.getSize());
+        FileInfo uploadedFile = fileService.uploadFile(file);
+        return ResponseEntity.ok(uploadedFile);
+    }
+
     @PostMapping("/update/{id}")
     public ResponseEntity<FileInfo> updateFile(@PathVariable Long id, @RequestBody FileInfo fileInfo) {
         FileInfo updatedFile = fileService.updateFile(id, fileInfo);
@@ -57,8 +67,8 @@ public class FileController {
     }
 
     @GetMapping("/{id}/preview")
-    public ResponseEntity<FileService.PreviewResult> previewFile(@PathVariable Long id) {
-        FileService.PreviewResult result = fileService.previewFile(id);
+    public ResponseEntity<FileService.PreviewResult> previewFile(@PathVariable Long id, HttpServletRequest request) {
+        FileService.PreviewResult result = fileService.previewFile(id,request);
         return ResponseEntity.ok(result);
     }
 

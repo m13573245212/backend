@@ -1,20 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.example.filemanagement.mapper.ImageInfoMapper">
+<mapper namespace="com.example.fileManagement.mapper.ImageInfoMapper">
 
-    <insert id="insertImage" parameterType="com.example.filemanagement.entity.ImageInfo" useGeneratedKeys="true"
+    <select id="getImages" resultType="com.example.fileManagement.entity.ImageInfo">
+        select
+            id,
+            file_name as fileName,
+            file_path as filePath,
+            md_file_id as mdFileId,
+            create_time as createTime,
+            update_time as updateTime
+        from image_info
+    </select>
+    <insert id="insertImage" parameterType="com.example.fileManagement.entity.ImageInfo" useGeneratedKeys="true"
             keyProperty="id">
         INSERT INTO image_info (file_name, file_path, md_file_id, create_time)
         VALUES (#{fileName}, #{filePath}, #{mdFileId}, NOW())
     </insert>
 
-    <select id="getImageById" resultType="com.example.filemanagement.entity.ImageInfo">
+    <select id="getImageById" resultType="com.example.fileManagement.entity.ImageInfo">
         SELECT id, file_name as fileName, file_path as filePath, 
                md_file_id as mdFileId, create_time as createTime, update_time as updateTime
         FROM image_info WHERE id = #{id}
     </select>
 
-    <select id="getImagesByMdFileId" resultType="com.example.filemanagement.entity.ImageInfo">
+    <select id="getImagesByMdFileId" resultType="com.example.fileManagement.entity.ImageInfo">
         SELECT id, file_name as fileName, file_path as filePath, 
                md_file_id as mdFileId, create_time as createTime, update_time as updateTime
         FROM image_info WHERE md_file_id = #{mdFileId}
