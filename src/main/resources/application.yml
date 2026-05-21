@@ -6,8 +6,8 @@ spring:
     url: jdbc:mysql://localhost:3306/study_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
     username: root
     password: 123456
-    driver-class-name: com.mysql.cj.jdbc.Driver
-  
+    driver-class-name: com.mysql.jdbc.Driver
+
   servlet:
     multipart:
       enabled: true
@@ -22,7 +22,6 @@ file:
 
 mybatis:
   mapper-locations: classpath:mapper/*.xml
-  type-aliases-package: com.example.filemanagement.entity
 
 pagehelper:
   helper-dialect: mysql

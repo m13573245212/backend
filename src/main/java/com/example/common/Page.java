@@ -1,4 +1,4 @@
-package com.example.fileManagement.entity;
+package com.example.common;
 
 import lombok.Data;
 

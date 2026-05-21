@@ -1,6 +1,6 @@
 package com.example.fileManagement.entity.req;
 
-import com.example.fileManagement.entity.Page;
+import com.example.common.Page;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 

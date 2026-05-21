@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.example.special.mapper.AutoTaskMapper">
+    <select id="getAutoTask" resultType="com.example.special.entity.AutoTaskInfo">
+        SELECT id,
+               task_code        as taskCode,
+               task_name        as taskName,
+               remark           as remark,
+               enable           as enable,
+               is_dynamic_class as isDynamicClass,
+               exec_type        as execType,
+               cron             as cron,
+               create_time      as createTime,
+               update_time      as updateTime,
+               create_by        as createBy
+        FROM auto_task
+        <where>
+            <if test="taskId != null">
+                and id = #{taskId}
+            </if>
+        </where>
+    </select>
+    <select id="getAutoTaskStep" resultType="com.example.special.entity.AutoTaskStepInfo">
+        SELECT id,
+               task_id         as taskId,
+               step_sort       as stepSort,
+               class_type      as classType,
+               class_full_name as classFullName,
+               method_name     as methodName,
+               dynamic_source  as dynamicSource,
+               remark          as remark,
+               create_time     as createTime,
+               update_time     as updateTime
+        FROM auto_task_step
+        <where>
+            <if test="taskId != null">
+                and task_id = #{taskId}
+            </if>
+        </where>
+    </select>
+    <select id="getAutoTaskParam" resultType="com.example.special.entity.AutoTaskParamInfo">
+        SELECT id,
+               step_id          as stepId,
+               param_index      as paramIndex,
+               param_type       as paramType,
+               param_value      as paramValue,
+               param_class_name as paramClassName,
+               create_time      as createTime,
+               update_time      as updateTime
+        FROM auto_task_param
+        <where>
+            <if test="stepId != null">
+                and step_id = #{stepId}
+            </if>
+        </where>
+    </select>
+    <select id="getAutoTaskParamAllSteps">
+        select     SELECT id,
+            step_id          as stepId,
+            param_index      as paramIndex,
+            param_type       as paramType,
+            param_value      as paramValue,
+            param_class_name as paramClassName,
+            create_time      as createTime,
+            update_time      as updateTime
+        FROM auto_task_param
+        where step_id in (select id from auto_task_step where task_id = #{taskId})
+    </select>
+    <insert id="insertAutoTask">
+        INSERT INTO auto_task (task_code, task_name, remark, enable, is_dynamic_class, exec_type, cron, create_time, update_time, create_by) VALUES (#{taskCode}, #{taskName}, #{remark}, #{enable}, #{isDynamicClass}, #{execType}, #{cron}, now(), now(), #{createBy})
+    </insert>
+    <insert id="insertAutoTaskStep">
+        INSERT INTO auto_task_step (task_id, step_sort, class_type, class_full_name, method_name, dynamic_source, remark, create_time, update_time)
+        VALUES
+        <foreach collection="steps" item="step" separator=",">
+            (#{step.taskId}, #{step.stepSort}, #{step.classType}, #{step.classFullName}, #{step.methodName}, #{step.dynamicSource}, #{step.remark}, now(), now())
+        </foreach>
+    </insert>
+    <insert id="insertAutoTaskParam">
+        INSERT INTO auto_task_param (step_id, param_index, param_type, param_value, param_class_name, create_time, update_time)
+        VALUES
+        <foreach collection="params" item="param" separator=",">
+            (#{param.stepId}, #{param.paramIndex}, #{param.paramType}, #{param.paramValue}, #{param.paramClassName}, now(), now())
+        </foreach>
+    </insert>
+    <delete id="deleteAutoTask">
+        delete from auto_task where id = #{id}
+    </delete>
+    <delete id="deleteAutoTaskStep">
+        delete from auto_task_step where id = #{id}
+    </delete>
+    <delete id="deleteAutoTaskParam">
+        delete from auto_task_param where id = #{id}
+    </delete>
+    <update id="updateAutoTask">
+        update auto_task
+        set task_code        = #{taskCode},
+            task_name        = #{taskName},
+            remark           = #{remark},
+            enable           = #{enable},
+            is_dynamic_class = #{isDynamicClass},
+            exec_type        = #{execType},
+            cron             = #{cron},
+            update_time      = now(),
+            create_by        = #{createBy}
+        where id = #{id}
+    </update>
+    <update id="updateAutoTaskStep">
+        update auto_task_step
+        set task_id         = #{taskId},
+            step_sort       = #{stepSort},
+            class_type      = #{classType},
+            class_full_name = #{classFullName},
+            method_name     = #{methodName},
+            dynamic_source  = #{dynamicSource},
+            remark          = #{remark},
+            update_time     = now()
+        where id = #{id}
+    </update>
+    <update id="updateAutoTaskParam">
+        update auto_task_param
+        set step_id          = #{stepId},
+            param_index      = #{paramIndex},
+            param_type       = #{paramType},
+            param_value      = #{paramValue},
+            param_class_name = #{paramClassName},
+            update_time      = now()
+        where id = #{id}
+    </update>
+</mapper>

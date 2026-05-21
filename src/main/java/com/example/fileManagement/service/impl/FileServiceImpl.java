@@ -205,23 +205,7 @@ public class FileServiceImpl implements FileService {
             System.out.println(html);
             System.out.println("===========================================================================");
             // 添加基础样式
-            return "<style>" +
-                    "body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; line-height: 1.6; padding: 20px; }" +
-                    "h1 { border-bottom: 1px solid #eee; padding-bottom: 0.3em; }" +
-                    "h2 { border-bottom: 1px solid #eee; padding-bottom: 0.3em; }" +
-                    "code { background-color: #f6f8fa; padding: 0.2em 0.4em; border-radius: 6px; font-size: 85%; }" +
-                    "pre { background-color: #f6f8fa; padding: 16px; border-radius: 6px; overflow-x: auto; }" +
-                    "pre code { padding: 0; }" +
-                    "a { color: #0366d6; text-decoration: none; }" +
-                    "a:hover { text-decoration: underline; }" +
-                    "ul, ol { padding-left: 2em; }" +
-                    "li { margin-top: 0.25em; }" +
-                    "blockquote { margin: 0; padding: 0 1em; color: #6a737d; border-left: 0.25em solid #dfe2e5; }" +
-                    "table { border-spacing: 0; border-collapse: collapse; width: 100%; }" +
-                    "th, td { padding: 6px 13px; border: 1px solid #dfe2e5; }" +
-                    "tr:nth-child(2n) { background-color: #f6f8fa; }" +
-                    "img { max-width: 100%; }" +
-                    "</style>" + html;
+            return html;
         } catch (Exception e) {
             log.error("Markdown 转换失败: {}", e.getMessage());
             return "<p>⚠️ Markdown 转换失败: " + e.getMessage() + "</p><pre>" + markdown + "</pre>";
