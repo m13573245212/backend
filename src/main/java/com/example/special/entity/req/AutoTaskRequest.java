@@ -7,6 +7,6 @@ import lombok.experimental.Accessors;
 @Data
 @Accessors(chain = true)
 public class AutoTaskRequest extends Page {
-
     private String taskId;
+    private String stepId;
 }

@@ -30,9 +30,9 @@ public interface AutoTaskMapper {
 
     int updateAutoTaskParam(AutoTaskParamInfo autoTaskParamInfo);
 
-    int deleteAutoTask(AutoTaskInfo autoTaskInfo);
+    int deleteAutoTask(String id);
 
-    int deleteAutoTaskStep(AutoTaskStepInfo autoTaskStepInfo);
+    int deleteAutoTaskStep(String id);
 
-    int deleteAutoTaskParam(AutoTaskParamInfo autoTaskParamInfo);
+    int deleteAutoTaskParam(String id);
 }

@@ -47,6 +47,7 @@
                param_type       as paramType,
                param_value      as paramValue,
                param_class_name as paramClassName,
+               from_step_id     as fromStepId,
                create_time      as createTime,
                update_time      as updateTime
         FROM auto_task_param
@@ -56,19 +57,21 @@
             </if>
         </where>
     </select>
-    <select id="getAutoTaskParamAllSteps">
-        select     SELECT id,
+    <select id="getAutoTaskParamAllSteps" resultType="com.example.special.entity.AutoTaskParamInfo">
+        SELECT id,
             step_id          as stepId,
             param_index      as paramIndex,
             param_type       as paramType,
             param_value      as paramValue,
             param_class_name as paramClassName,
+            from_step_id     as fromStepId,
             create_time      as createTime,
             update_time      as updateTime
         FROM auto_task_param
         where step_id in (select id from auto_task_step where task_id = #{taskId})
+        ORDER BY step_id, param_index
     </select>
-    <insert id="insertAutoTask">
+    <insert id="insertAutoTask" parameterType="com.example.special.entity.AutoTaskInfo">
         INSERT INTO auto_task (task_code, task_name, remark, enable, is_dynamic_class, exec_type, cron, create_time, update_time, create_by) VALUES (#{taskCode}, #{taskName}, #{remark}, #{enable}, #{isDynamicClass}, #{execType}, #{cron}, now(), now(), #{createBy})
     </insert>
     <insert id="insertAutoTaskStep">
@@ -79,10 +82,10 @@
         </foreach>
     </insert>
     <insert id="insertAutoTaskParam">
-        INSERT INTO auto_task_param (step_id, param_index, param_type, param_value, param_class_name, create_time, update_time)
+        INSERT INTO auto_task_param (step_id, param_index, param_type, param_value, param_class_name,from_step_id, create_time, update_time)
         VALUES
         <foreach collection="params" item="param" separator=",">
-            (#{param.stepId}, #{param.paramIndex}, #{param.paramType}, #{param.paramValue}, #{param.paramClassName}, now(), now())
+            (#{param.stepId}, #{param.paramIndex}, #{param.paramType}, #{param.paramValue}, #{param.paramClassName},#{param.fromStepId}, now(), now())
         </foreach>
     </insert>
     <delete id="deleteAutoTask">
@@ -126,6 +129,7 @@
             param_type       = #{paramType},
             param_value      = #{paramValue},
             param_class_name = #{paramClassName},
+            from_step_id     = #{fromStepId},
             update_time      = now()
         where id = #{id}
     </update>
