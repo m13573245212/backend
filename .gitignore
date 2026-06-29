@@ -1,0 +1,17 @@
+# Maven
+target/
+uploads/
+pom.xml.tag
+
+# IDE
+.idea/
+.vscode/
+.classpath
+.project
+
+# Logs
+logs/
+*.log
+
+# Local config
+application-local.yml
