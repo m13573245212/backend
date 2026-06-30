@@ -6,7 +6,7 @@ spring:
     url: jdbc:mysql://localhost:3306/study_db?useUnicode=true&characterEncoding=utf-8&serverTimezone=Asia/Shanghai&zeroDateTimeBehavior=convertToNull
     username: root
     password: 123456
-    driver-class-name: com.mysql.jdbc.Driver
+    driver-class-name: com.mysql.cj.jdbc.Driver
 
   servlet:
     multipart:

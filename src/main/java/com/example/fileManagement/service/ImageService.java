@@ -3,7 +3,6 @@ package com.example.fileManagement.service;
 import com.example.fileManagement.entity.ImageInfo;
 import com.example.fileManagement.entity.req.ImageRequest;
 import com.github.pagehelper.PageInfo;
-import org.springframework.core.io.Resource;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.multipart.MultipartFile;
 

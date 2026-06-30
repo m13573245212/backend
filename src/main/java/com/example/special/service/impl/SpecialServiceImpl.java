@@ -141,6 +141,7 @@ public class SpecialServiceImpl implements SpecialService {
     // ======================
     // 执行单步（核心逻辑）
     // ======================
+    @SuppressWarnings("null")
     private Object executeStep(AutoTaskStepInfo step, List<AutoTaskParamInfo> params, String taskId, Map<String, Object> stepResultMap) throws Exception {
         Class<?> clazz;
         Object instance;
